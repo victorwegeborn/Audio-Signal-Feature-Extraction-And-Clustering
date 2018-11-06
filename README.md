@@ -40,7 +40,7 @@ Configure which classes and what features to use during clustering by modifying 
 By default, all avaliable features are used.
 
 ```
-python Cluster.py -d config
+python Cluster.py -c config
 ```
 
 Evaluation metrics
