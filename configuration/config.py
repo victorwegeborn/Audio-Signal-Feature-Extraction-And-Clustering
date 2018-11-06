@@ -1,5 +1,6 @@
-# list subfolders to be included
-# in the training data
+# List all classes that are to be included in the clustering.
+# Be sure to use the exact capitalization from the subfolders
+# in the sample directory
 classes = [
     'cymbal',
     'Kick',
@@ -10,7 +11,7 @@ classes = [
 
 # List features to include in the training data
 # that have been processed and stored on disc
-# features available: mfcc,
+# features available: mfcc, decay, brightness, rolloff
 features = [
     'mfcc',
     'decay',

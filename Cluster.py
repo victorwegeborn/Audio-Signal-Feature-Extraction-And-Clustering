@@ -39,13 +39,13 @@ def main():
     print('data:\t\t{}\t\t{}\ntargets:\t{}\t\t{}'.format(
                 data.shape[0], data.shape[1], targets.shape[0], set(np.unique(targets))))
 
-    # Transforms features by scaling each feature between (0,1)
+    # Transforms features by scaling each feature between (0,1).
     scaler = MinMaxScaler()
     data = scaler.fit_transform(data)
 
     print(82 * '_')
     print('Clustering data...\n')
-    print('Algo\t\ttime\tinertia\thomo\tcompl\tv-meas\tARI\tAMI')
+    print('Algo\t\ttime\tinertia\thomo\tcompl\tv-meas')
     clusters = evaluate(KMeans(init='k-means++', n_clusters=len(set(np.unique(targets))),
                                n_init=200, max_iter=10000),
                                name='k-means', data=data,
@@ -70,13 +70,11 @@ def main():
 def evaluate(estimator, name, data, labels):
     t0 = time()
     clusters = estimator.fit_predict(data)
-    print('%-9s\t%.2fs\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f'
+    print('%-9s\t%.2fs\t%.3f\t%.3f\t%.3f\t%.3f'
           % (name, (time() - t0), estimator.inertia_,
              metrics.homogeneity_score(labels, estimator.labels_),
              metrics.completeness_score(labels, estimator.labels_),
-             metrics.v_measure_score(labels, estimator.labels_),
-             metrics.adjusted_rand_score(labels, estimator.labels_),
-             metrics.adjusted_mutual_info_score(labels,  estimator.labels_, average_method='arithmetic')))
+             metrics.v_measure_score(labels, estimator.labels_)))
     return clusters
 
 

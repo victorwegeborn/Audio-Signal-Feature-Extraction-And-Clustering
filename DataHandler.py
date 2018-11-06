@@ -31,8 +31,8 @@ class DataHandler:
         self._summary = { 'targets': [], 'total': 0, 'longest_frame_size': 0 }
 
     def load_data(self, classes, features):
-        # Load wanted features and concatenate
-        # data for clustering
+        # Loads data buckets and packs everything
+        # into clustering friendly data.
         return_data = []
         return_targets = []
         for c in classes:
@@ -48,11 +48,9 @@ class DataHandler:
             return_targets.append(np.zeros((current_class.shape[0],1), dtype=int))
 
         # Assign labels/targets to corresponting data class
-        # Only used for evaluation of model
+        # Used during the evaluation of the model
         for idx, targets in enumerate(return_targets):
             targets += idx
-
-        # TODO: mergings of classes..
 
         # Pack features into training data
         data = None
@@ -69,10 +67,12 @@ class DataHandler:
 
 
     def _wav_to_data(self, data_path):
-        # Walk throught all subdirectories of data_path
-        # Bundles all subdirs of a class into one bucket
-        #       e.g cymbals/* == class 'cymbals'
-        # Prints summary of samples in the end
+        '''
+        Walk throught all subdirectories of data_path
+        Bundles all subdirs of a class into one bucket
+               e.g cymbals/* == class 'cymbals'
+        Prints summary of samples in the end
+        '''
         print(80 * '_')
         print('>> Samples-to-buckets phase')
         print('class\t\tnsamples\tshortest\tlongest')
@@ -124,16 +124,18 @@ class DataHandler:
         print('\n>> Summary:')
         print('target\t\tnsamples\tpercentage')
         for entry in self._summary['targets']:
-            print('{:9s}\t{:d}\t\t{:.00%}'.format(entry[0], entry[1], entry[1]/self._summary['total']))
-        print('total\t\t{:d}\t\t({:.0%})'.format(self._summary['total'], self._summary['total']/self._summary['total']))
+            print('{:9s}\t{:d}\t\t{:.2f}'.format(entry[0], entry[1], entry[1]/self._summary['total']*100))
+        print('total\t\t{:d}\t\t({:.2f})'.format(self._summary['total'], self._summary['total']/self._summary['total']*100))
         return data_dicts
 
 
     def _extract_data_features(self, feature_types, data_dicts):
-        # Extracts features in feature_types list.
-        # Each feature extraction is stored as dict like: {data: x, target: t}
-        # Features are stored in a modular fasion for easier selection of data
-        # to cluster on
+        '''
+        Extracts features in feature_types list.
+        Each feature extraction is stored as dict like: {data: x, target: t}
+        Features are stored in a modular fasion for easier selection of data
+        to cluster on
+        '''
         t0 = time()
         print(100 * '_')
         print('>> Feature extraction phase')
@@ -147,7 +149,7 @@ class DataHandler:
 
                 data = eval('self._'+feature+'_extraction(data_dict)')
                 self._store_data(relative_path+data_dict['target']+'_'+feature, data)
-        print('>> Feature extraction completed in {:d}s'.format(t0 - time()))
+        print('>> Feature extraction completed in %.2fs' % (time()- t0))
 
 
     def _mfcc_extraction(self, data_dict):
@@ -256,12 +258,6 @@ class DataHandler:
             # and use as feature
             decay_time = decay_frames/44100.
             feature_data[idx] = decay_time
-
-            if data_dict['target'] == 'cymbal' or data_dict['target'] == 'Kick':
-                plt.plot(offset, max_peak, 'o')
-                plt.plot(maximized_window)
-                plt.plot(data)
-                plt.show()
         return {'data': feature_data,'target': data_dict['target'] }
 
 
@@ -278,11 +274,6 @@ class DataHandler:
             fft = np.abs(np.fft.rfft(data))
             brightness = np.sum(fft[frequency_threshold:]) / np.sum(fft)
             feature_data[idx] = brightness
-            '''
-            if data_dict['target'] == 'cymbal':
-                plt.plot(freqL, fL)
-                plt.show()
-            '''
         return {'data': feature_data, 'target': data_dict['target']}
 
 
