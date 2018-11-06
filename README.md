@@ -64,7 +64,7 @@ Bellow is a summary of the distribution of the data per class:
 | percentage | 1.28% | 5.36% | 0.94% | 12.00% | 23.57% | 8.00% | 21.45% | 14.81% | 12.60% | (100%) 
  
 
-### Results on 5 classes 
+### Results on a 5 class subset 
 
 All available features was used in this Experiment.
 The final result on a subset of the classes consisting of kick, snare, hi-hat, cymbal, and tom:
@@ -79,7 +79,7 @@ Model accuracy: 0.904
 
 <img align="center" width="420" height="315" src="https://github.com/victorwegeborn/Audio-Signal-Feature-Extraction-And-Clustering/blob/master/results/confusion_matrix.png"><img align="center" width="420" height="315" src="https://github.com/victorwegeborn/Audio-Signal-Feature-Extraction-And-Clustering/blob/master/results/confusion_matrix_norm.png">
 
-
+The unnormalized confusion matrix shows that dispite the skeewed dataset, the clustering works rather well. This can mostly be attributed to the mfcc feature that produces clusters with 0.746 in v-measure score.
 
 
 
