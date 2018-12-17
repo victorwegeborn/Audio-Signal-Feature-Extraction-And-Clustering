@@ -52,7 +52,7 @@ The following metrics are used to evaluate the clusters:
 
 Clusters are then relabeled according to initial classes and the accuarcy and a confusion matrix is computed.
 
-XLN audio - master thesis application
+Results
 =============
 
 A data set consisting of 1175 drum samples were to be identified based using clustering. All drum samples had a frame rate of 44100 and a 24-bit depth.
